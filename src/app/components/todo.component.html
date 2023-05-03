@@ -1,0 +1,59 @@
+
+<form [formGroup]="todoForm" (ngSubmit)="processTodo()">
+    <table>
+        <tr>
+            <td>Name: </td>
+            <td>
+                <input type="text" size="30" formControlName="name" placeholder="Enter your full name">
+                <span *ngIf="hasError('name')">
+                    Please enter your name
+                  </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Due Date: </td>
+            <td>
+                <input type="datetime-local" size="30" formControlName="dueDate">
+                <span *ngIf="hasError('dueDate')">
+                    Please enter date
+                  </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" [disabled]="isFormInvalid()">Save</button>
+            </td>
+            <td>
+                <button type="button" (click) = "addTask()">Add Task</button>
+            </td>
+        </tr>
+    </table>
+
+
+    <div *ngIf="taskArray.length > 0; else noTask">
+        <h2>Task</h2>
+        <table formArrayName="taskList">
+            <tr *ngFor="let it of taskArray.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <input type="text" size="30" placeholder="Task description" formControlName="taskName">
+                </td>
+                <td>
+                  <select formControlName="priority">
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                  </select>
+                </td>
+                <td>
+                  <button (click)="deleteTask(i)">X</button>
+                </td>
+              </tr>
+        </table>
+    </div>
+</form>
+
+<hr>
+
+<ng-template #noTask>
+    <h2> You have no task </h2>
+  </ng-template>
